@@ -3,7 +3,8 @@ const port = process.env.PORT || 3100;
 const express = require('express');
 
 // custom modules/functions defined in other files can be declared here;
-const {connectToDB, addUser, getProduct, getProducts} = require('./utils/database');
+const {connectToDB, addUser, checkUser,
+    getProduct, getProducts} = require('./utils/database');
 
 const app = express();
 
@@ -19,14 +20,16 @@ app.get('/', (req, res) => {
 
 // LOGIN
 app.get('/login', (req, res) => {
-    ;
+    const username = req.body.username;
+    const password = req.body.password;
+    res.send(checkUser(db, username, password));
 });
 
 // REGISTER
 app.post('/register', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    addUser(username, password);
+    res.send(addUser(db, username, password));
 });
 
 // PRODUCT GALLERY
